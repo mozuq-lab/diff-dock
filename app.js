@@ -188,6 +188,9 @@
 
   function init() {
     cacheElements();
+    if (window.diffDockRuntime && window.diffDockRuntime.isElectron) {
+      document.body.classList.add("is-electron");
+    }
     bindEvents();
     updateDiff();
   }

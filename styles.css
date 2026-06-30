@@ -81,6 +81,10 @@ input {
   align-items: center;
 }
 
+.is-electron .window-controls {
+  display: none;
+}
+
 .control {
   width: 12px;
   height: 12px;

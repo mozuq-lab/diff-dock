@@ -8,6 +8,9 @@ DiffDockは、ローカルブラウザでそのまま開ける簡易差分比較
 - `styles.css`: 見た目
 - `diff-engine.js`: 行単位と文字単位の差分ロジック
 - `app.js`: 入力、ボタン、表示更新などのUI制御
+- `main.js`: Electronのメインプロセス
+- `preload.js`: Electronのpreloadスクリプト
+- `package.json`: Electron起動用のnpm設定
 
 ## 開き方
 
@@ -20,6 +23,22 @@ open index.html
 ```
 
 ビルドやパッケージインストールは不要です。
+
+## Electronで起動する場合
+
+初回だけ依存関係をインストールしてください。
+
+```sh
+npm install
+```
+
+起動:
+
+```sh
+npm start
+```
+
+この段階ではパッケージ化や署名は未対応です。ローカル開発用にElectronウィンドウで`index.html`を開く最小構成です。
 
 ## 大きな入力について
 
