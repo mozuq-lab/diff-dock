@@ -45,6 +45,7 @@ body {
 }
 
 button,
+select,
 textarea,
 input {
   font: inherit;
@@ -125,8 +126,17 @@ h1 {
   flex-wrap: wrap;
 }
 
+.toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .button,
-.toggle {
+.toggle,
+.format-select,
+.mini-button {
   min-height: 34px;
   display: inline-flex;
   align-items: center;
@@ -143,17 +153,36 @@ h1 {
   cursor: pointer;
 }
 
+.format-select {
+  max-width: 150px;
+  padding: 0 30px 0 10px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.mini-button {
+  min-height: 28px;
+  padding: 0 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .button:hover,
-.toggle:hover {
+.toggle:hover,
+.format-select:hover,
+.mini-button:hover {
   border-color: #aeb5c1;
   background: linear-gradient(#ffffff, #e9edf2);
 }
 
-.button:active {
+.button:active,
+.mini-button:active {
   transform: translateY(1px);
 }
 
 .button:focus-visible,
+.format-select:focus-visible,
+.mini-button:focus-visible,
 .toggle input:focus-visible + .switch {
   outline: 3px solid rgba(47, 111, 237, 0.22);
   outline-offset: 2px;
@@ -209,6 +238,14 @@ h1 {
   transform: translateX(14px);
 }
 
+.diff-position {
+  min-width: 52px;
+  color: #4e5866;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
 .workspace {
   min-height: 0;
   display: grid;
@@ -255,8 +292,49 @@ h1 {
   font-weight: 600;
 }
 
+.pane-title,
+.pane-actions {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.pane-title {
+  flex: 1 1 auto;
+}
+
+.pane-actions {
+  flex: 0 0 auto;
+}
+
 .pane-header label {
   color: #303741;
+}
+
+.file-name {
+  min-width: 0;
+  overflow: hidden;
+  color: #7b8492;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.editor-pane.is-drag-over {
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 3px rgba(47, 111, 237, 0.18),
+    var(--shadow);
 }
 
 textarea {
@@ -315,6 +393,18 @@ textarea::placeholder {
 
 .status-banner.has-warning {
   color: #7a4b00;
+}
+
+.export-status {
+  min-width: 110px;
+  flex: 1 1 auto;
+  color: #536070;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.export-status.has-error {
+  color: #8a252a;
 }
 
 .stats {
@@ -420,6 +510,11 @@ textarea::placeholder {
   filter: brightness(0.98);
 }
 
+.diff-row.is-current-diff {
+  outline: 2px solid rgba(47, 111, 237, 0.7);
+  outline-offset: -2px;
+}
+
 .line-number,
 .code-cell {
   min-width: 0;
@@ -498,6 +593,37 @@ textarea::placeholder {
   color: #755407;
 }
 
+.row-collapsed {
+  min-height: 32px;
+  color: #6a7482;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #f8f9fb,
+      #f8f9fb 8px,
+      #f1f3f6 8px,
+      #f1f3f6 16px
+    );
+}
+
+.collapsed-cell {
+  grid-column: 1 / -1;
+  padding: 7px 12px;
+  border-right: 0;
+  color: #67707e;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Hiragino Sans",
+    "Yu Gothic",
+    "Meiryo",
+    sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
 .empty-state {
   min-height: 100%;
   display: grid;
@@ -520,6 +646,10 @@ textarea::placeholder {
     justify-content: flex-start;
   }
 
+  .toolbar-group {
+    width: 100%;
+  }
+
   .workspace {
     grid-template-rows: minmax(360px, 48vh) auto minmax(280px, 1fr);
   }
@@ -531,6 +661,10 @@ textarea::placeholder {
   .summary-bar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .export-status {
+    min-width: 0;
   }
 
   .diff-header,
@@ -545,9 +679,26 @@ textarea::placeholder {
   }
 
   .button,
-  .toggle {
+  .toggle,
+  .format-select {
     width: 100%;
+    max-width: none;
     justify-content: center;
+  }
+
+  .toolbar-group {
+    align-items: stretch;
+  }
+
+  .pane-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 8px 12px;
+  }
+
+  .pane-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .stats {

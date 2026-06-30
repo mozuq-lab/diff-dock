@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const { sourceFiles } = require("./source-files");
 
 const rootDir = path.resolve(__dirname, "..");
 const packageJsonPath = path.join(rootDir, "package.json");
@@ -24,7 +25,6 @@ const outMacOSPath = path.join(outContentsPath, "MacOS");
 const outResourcesPath = path.join(outContentsPath, "Resources");
 const bundledAppPath = path.join(outResourcesPath, "app");
 const iconSourceCandidates = [
-  path.join(rootDir, "assets", "icon-transparent.png"),
   path.join(rootDir, "assets", "icon.png"),
 ];
 const iconSourcePath = iconSourceCandidates.find((candidatePath) =>
@@ -34,14 +34,6 @@ const iconsetPath = path.join(outDir, `${productName}.iconset`);
 const icnsPath = path.join(outResourcesPath, `${productName}.icns`);
 const electronIcnsPath = path.join(outResourcesPath, "electron.icns");
 const plistPath = path.join(outContentsPath, "Info.plist");
-const sourceFiles = [
-  "main.js",
-  "preload.js",
-  "index.html",
-  "styles.css",
-  "app.js",
-  "diff-engine.js",
-];
 
 function fail(message) {
   console.error(message);
@@ -163,8 +155,10 @@ function signBundle() {
   try {
     run("codesign", ["--force", "--deep", "--sign", "-", outAppPath]);
   } catch (error) {
-    console.warn(
-      "codesign failed; the .app was created but may not launch by double-click."
+    fail(
+      "codesign failed. The ad-hoc signature is required for the .app to launch " +
+      "by double-click, so the build is aborted.\n" +
+      "Ensure the Xcode command line tools are installed (xcode-select --install)."
     );
   }
 }

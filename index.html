@@ -28,28 +28,70 @@
         </div>
 
         <div class="toolbar" aria-label="比較操作">
-          <label class="toggle">
-            <input id="ignoreWhitespace" type="checkbox">
-            <span class="switch" aria-hidden="true"></span>
-            <span>空白を無視</span>
-          </label>
-          <button id="swapButton" type="button" class="button">
-            <span aria-hidden="true">⇄</span>
-            <span>左右を入れ替え</span>
-          </button>
-          <button id="clearButton" type="button" class="button button-danger">
-            <span aria-hidden="true">⌫</span>
-            <span>クリア</span>
-          </button>
+          <div class="toolbar-group">
+            <label class="toggle">
+              <input id="ignoreWhitespace" type="checkbox">
+              <span class="switch" aria-hidden="true"></span>
+              <span>空白を無視</span>
+            </label>
+            <label class="toggle">
+              <input id="collapseEqual" type="checkbox">
+              <span class="switch" aria-hidden="true"></span>
+              <span>同一行を折りたたむ</span>
+            </label>
+          </div>
+          <div class="toolbar-group">
+            <button id="prevDiffButton" type="button" class="button" title="前の差分へ移動">
+              <span aria-hidden="true">↑</span>
+              <span>前</span>
+            </button>
+            <span id="diffPosition" class="diff-position" aria-live="polite">0 / 0</span>
+            <button id="nextDiffButton" type="button" class="button" title="次の差分へ移動">
+              <span aria-hidden="true">↓</span>
+              <span>次</span>
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <select id="exportFormat" class="format-select" aria-label="エクスポート形式">
+              <option value="unified">Unified diff</option>
+              <option value="markdown">Markdown</option>
+              <option value="html">HTML</option>
+            </select>
+            <button id="copyExportButton" type="button" class="button">
+              <span aria-hidden="true">⧉</span>
+              <span>コピー</span>
+            </button>
+            <button id="saveExportButton" type="button" class="button">
+              <span aria-hidden="true">↓</span>
+              <span>保存</span>
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <button id="swapButton" type="button" class="button">
+              <span aria-hidden="true">⇄</span>
+              <span>左右を入れ替え</span>
+            </button>
+            <button id="clearButton" type="button" class="button button-danger">
+              <span aria-hidden="true">⌫</span>
+              <span>クリア</span>
+            </button>
+          </div>
         </div>
       </header>
 
       <main class="workspace">
         <section class="editor-panes" aria-label="比較するテキスト">
-          <article class="editor-pane">
+          <article id="leftPane" class="editor-pane" data-pane="left">
             <div class="pane-header">
-              <label for="leftInput">左ペイン</label>
-              <span id="leftLineCount">0 行</span>
+              <div class="pane-title">
+                <label for="leftInput">左ペイン</label>
+                <span id="leftFileName" class="file-name">直接入力</span>
+              </div>
+              <div class="pane-actions">
+                <span id="leftLineCount">0 行</span>
+                <button id="leftFileButton" type="button" class="mini-button">ファイル</button>
+                <input id="leftFileInput" class="visually-hidden" type="file">
+              </div>
             </div>
             <textarea
               id="leftInput"
@@ -59,10 +101,17 @@
             ></textarea>
           </article>
 
-          <article class="editor-pane">
+          <article id="rightPane" class="editor-pane" data-pane="right">
             <div class="pane-header">
-              <label for="rightInput">右ペイン</label>
-              <span id="rightLineCount">0 行</span>
+              <div class="pane-title">
+                <label for="rightInput">右ペイン</label>
+                <span id="rightFileName" class="file-name">直接入力</span>
+              </div>
+              <div class="pane-actions">
+                <span id="rightLineCount">0 行</span>
+                <button id="rightFileButton" type="button" class="mini-button">ファイル</button>
+                <input id="rightFileInput" class="visually-hidden" type="file">
+              </div>
             </div>
             <textarea
               id="rightInput"
@@ -77,6 +126,7 @@
           <div id="statusBanner" class="status-banner" role="status" aria-live="polite">
             一致しています
           </div>
+          <div id="exportStatus" class="export-status" role="status" aria-live="polite"></div>
           <div class="stats" aria-label="差分件数">
             <span class="stat stat-total">差分 <strong id="countTotal">0</strong></span>
             <span class="stat stat-changed">変更 <strong id="countChanged">0</strong></span>
