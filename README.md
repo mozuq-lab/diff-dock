@@ -38,7 +38,23 @@ npm install
 npm start
 ```
 
-この段階ではパッケージ化や署名は未対応です。ローカル開発用にElectronウィンドウで`index.html`を開く最小構成です。
+`npm start`はローカル開発用にElectronウィンドウで`index.html`を開きます。
+
+## macOSの`.app`バンドルを作成する場合
+
+初回だけ依存関係をインストールしてください。
+
+```sh
+npm install
+```
+
+作成:
+
+```sh
+npm run build:mac
+```
+
+成功すると`out/mac/DiffDock.app`が作成されます。ローカル実行用のad-hoc署名を行いますが、配布用のDeveloper ID署名やnotarizationは含みません。
 
 ## 大きな入力について
 
